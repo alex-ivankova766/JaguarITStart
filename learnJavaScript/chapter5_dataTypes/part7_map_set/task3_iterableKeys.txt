@@ -1,0 +1,23 @@
+"use strict";
+
+let map = new Map();
+
+map.set("name", "John");
+
+let keys = map.keys();
+
+// Error: keys.push is not a function
+// Ошибка: keys.push -- это не функция
+keys.push("more");
+
+ОТВЕТ: map.keys(); возвращает итерируемый объект.
+Даже если преобразовать его в массив, при помощи
+let keys = Array.from(map.keys());
+в map не будут добавляться ключи при keys.push("more");
+а только в саму копию: keys;
+
+alert(keys); // name, more 
+alert(map.has("name")); => true
+alert(map.has("more")); => false
+
+Если нарисовать усы на снимке, на человеке они не появятся :D
