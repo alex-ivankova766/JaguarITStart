@@ -32,7 +32,7 @@ function stringSum(number1, number2) {
         checkPositions(result);
     }
 
-    return (negative) ? ("-" + result.reverse().join("")) : result.reverse().join("");
+    return (negative ? "-" : "") + result.reverse().join("");
 
 }
 
@@ -76,7 +76,7 @@ function stringDifference(number1, number2) {
         result = result.slice(1);
     }
 
-    return (negative) ? ("-" + result.join("")) : result.join("");
+    return (negative ? "-" : "") + result.join("");
 }
 
 function stringCompose(number1, number2) {
@@ -112,7 +112,7 @@ function stringCompose(number1, number2) {
         }
     }
 
-    return (!negative) ? (result.reverse().join("")) : ("-" + result.reverse().join(""));
+    return (negative ? "-" : "") + result.reverse().join("");
 }
 
 function stringDivision(number1, number2) {
@@ -137,9 +137,7 @@ function stringDivision(number1, number2) {
 
     let remainder = number1;
 
-    let result = (!negative) ? 
-    ((remainder != 0) ? `${quotient} целых, ${remainder} / ${number2}.` : quotient) :
-    ((remainder != 0) ? `-${quotient} целых, ${remainder} / ${number2}.` : quotient);
+    let result = (negative ? "-" : "") + ((remainder != 0) ? `${quotient} целых, ${remainder} / ${number2}.` : quotient);
 
     return result;
 }
