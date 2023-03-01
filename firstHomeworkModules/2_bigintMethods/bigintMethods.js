@@ -1,16 +1,14 @@
-/*На данном этапе обучения удалось реализовать 
-функции сложения, вычитания, произведения и деления
-для положительных целых чисел. Числа должны быть
-представлены в виде строк.
-Результат деления представляется в виде Частного и остатка.*/
-
-
 function stringSum(number1, number2) {
-    if (number1[0] == "-" || number2[0] == "-") {
-        return `На данный момент функция разработана только для целых положительных чисел. 
-Спасибо за понимание.`;
-    }
 
+    let negative = false;
+    if (number1[0] == "-" && number2[0] != "-") {
+        return stringDifference(number2, number1.slice(1));
+    } else if (number2[0] == "-" && number1[0] != "-") {
+        return stringDifference(number1, number2.slice(1));
+    } else if (number2[0] == "-" && number1[0] == "-") {
+        negative = true;
+    }
+ 
     let result;
     
     number1 = number1.split("").reverse().map(num => +num);
@@ -34,16 +32,21 @@ function stringSum(number1, number2) {
         checkPositions(result);
     }
 
-    return result.reverse().join("");
+    return (negative) ? ("-" + result.reverse().join("")) : result.reverse().join("");
 
 }
 
 function stringDifference(number1, number2) {
+    
     let negative = false;
-    if (number1[0] == "-" || number2[0] == "-") {
-        return `На данный момент функция разработана только для целых положительных чисел. 
-Спасибо за понимание.`;
+    if (number1[0] == "-" && number2[0] != "-") {
+        return stringSum(number1, number2);
+    } else if (number2[0] == "-" && number1[0] != "-") {
+        return stringSum(number1, number2.slice(1));
+    } else if (number2[0] == "-" && number1[0] == "-") {
+        return stringDifference(number2.slice(1), number1);
     }
+
     let result;
     
     number1 = number1.split("").reverse().map(num => +num);
@@ -53,7 +56,7 @@ function stringDifference(number1, number2) {
 
     if ((number1.at(-1) - number2.at(-1)) < 0) {
         [number1, number2] = [number2, number1];
-        negative = true;
+        negative = !negative;
     }
     
     result = [];
@@ -73,20 +76,21 @@ function stringDifference(number1, number2) {
         result = result.slice(1);
     }
 
-    if (negative) {
-        result = "-" + result.join("");
-    } else {
-        result = result.join("");
-    }
-
-    return result;
+    return (negative) ? ("-" + result.join("")) : result.join("");
 }
 
 function stringCompose(number1, number2) {
-    if (number1[0] == "-" || number2[0] == "-") {
-        return `На данный момент функция разработана только для целых положительных чисел. 
-Спасибо за понимание.`;
+
+    let negativeCounter = 0;
+    if (number1[0] == "-") {
+        negativeCounter += 1;
+        number1 = number1.slice(1);
     }
+    if (number2[0] == "-") {
+        negativeCounter += 1;
+        number2 = number2.slice(1);
+    }
+    let negative = (negativeCounter % 2 == 1) ? true : false;
 
     let result;
     
@@ -106,18 +110,23 @@ function stringCompose(number1, number2) {
             }
             checkPositions(result);
         }
-        
     }
 
-    return result.reverse().join("");
-
+    return (!negative) ? (result.reverse().join("")) : ("-" + result.reverse().join(""));
 }
 
 function stringDivision(number1, number2) {
-    if (number1[0] == "-" || number2[0] == "-") {
-        return `На данный момент функция разработана только для целых положительных чисел. 
-Спасибо за понимание.`;
+
+    let negativeCounter = 0;
+    if (number1[0] == "-") {
+        negativeCounter += 1;
+        number1 = number1.slice(1);
     }
+    if (number2[0] == "-") {
+        negativeCounter += 1;
+        number2 = number2.slice(1);
+    }
+    let negative = (negativeCounter % 2 == 1) ? true : false;
 
     let quotient = 0;
     
@@ -128,10 +137,11 @@ function stringDivision(number1, number2) {
 
     let remainder = number1;
 
-    let result = (remainder != 0) ? `${quotient} целых, ${remainder} / ${number2}.` : quotient;
+    let result = (!negative) ? 
+    ((remainder != 0) ? `${quotient} целых, ${remainder} / ${number2}.` : quotient) :
+    ((remainder != 0) ? `-${quotient} целых, ${remainder} / ${number2}.` : quotient);
 
     return result;
-
 }
 
 function checkPositions(numbers) {
@@ -170,9 +180,9 @@ console.log(stringDifference("123", "223"));
 console.log(stringDifference("999", "-1"));
 
 console.log(stringCompose("15", "2"));
-console.log(stringCompose("600", "20"));
-console.log(stringCompose("1000", "9"));
+console.log(stringCompose("-600", "20"));
+console.log(stringCompose("-1000", "-9"));
 
-console.log(stringDivision("15", "200"));
+console.log(stringDivision("-15", "-200"));
 console.log(stringDivision("600", "20"));
-console.log(stringDivision("1000", "9"));
+console.log(stringDivision("-1000", "9"));
