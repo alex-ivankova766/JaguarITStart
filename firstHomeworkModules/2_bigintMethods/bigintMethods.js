@@ -29,7 +29,7 @@ function stringSum(number1, number2) {
         } else {
             result[i] = number1[i] + number2[i];
         }
-        checkPositions(result);
+        checkPositions(result, i);
     }
 
     return (negative ? "-" : "") + result.reverse().join("");
@@ -40,11 +40,11 @@ function stringDifference(number1, number2) {
     
     let negative = false;
     if (number1[0] == "-" && number2[0] != "-") {
-        return stringSum(number1, number2);
+        return "-" + stringSum(number1.slice(1), number2);
     } else if (number2[0] == "-" && number1[0] != "-") {
         return stringSum(number1, number2.slice(1));
     } else if (number2[0] == "-" && number1[0] == "-") {
-        return stringDifference(number2.slice(1), number1);
+        return stringDifference(number2.slice(1), number1.slice(1));
     }
 
     let result;
@@ -54,9 +54,11 @@ function stringDifference(number1, number2) {
 
     equalizePositions(number1, number2);
 
-    if ((number1.at(-1) - number2.at(-1)) < 0) {
-        [number1, number2] = [number2, number1];
-        negative = !negative;
+    for (let index = 0; index < number1.length; index ++){
+        if ((number1.at(index) - number2.at(index)) < 0) {
+            [number1, number2] = [number2, number1];
+            negative = !negative;
+        }
     }
     
     result = [];
@@ -69,17 +71,21 @@ function stringDifference(number1, number2) {
         }    
     }
 
-    checkPositions(result);
+    checkPositionsSumDiff(result);
     result = result.reverse();
 
     if (result[0] == 0) {
-        result = result.slice(1);
+        while (result[0] == 0) {
+            result = result.slice(1);
+        } 
     }
 
     return (negative ? "-" : "") + result.join("");
 }
 
 function stringCompose(number1, number2) {
+
+    if (number1 == "0" || number2 == "0") return "0";
 
     let negativeCounter = 0;
     if (number1[0] == "-") {
@@ -103,12 +109,12 @@ function stringCompose(number1, number2) {
 
     for (let i = 0; i < number2.length; i++) {
         for (let j = 0; j < number1.length; j++) {
-            if (result[i]) {
-                result[i] += number1[j] * number2[i];
+            if (result[i + j]) {
+                result[i + j] += number1[j] * number2[i];
             } else {
-                result[i] = number1[j] * number2[i];
+                result[i + j] = number1[j] * number2[i];
             }
-            checkPositions(result);
+            checkPositions(result, (i + j));
         }
     }
 
@@ -116,6 +122,9 @@ function stringCompose(number1, number2) {
 }
 
 function stringDivision(number1, number2) {
+
+    if (number1 == "0") return "0";
+    if (number2 == "0") return "Error: zero division";
 
     let negativeCounter = 0;
     if (number1[0] == "-") {
@@ -142,7 +151,16 @@ function stringDivision(number1, number2) {
     return result;
 }
 
-function checkPositions(numbers) {
+function checkPositions(numbers, index) {
+    if (numbers[index] > 9) {
+        let high = +String(numbers[index])[0];
+        let low = +String(numbers[index])[1];
+        numbers[index] = low;
+        numbers[index + 1] = high;
+    }   
+}
+
+function checkPositionsSumDiff(numbers) {
     for (let i = 0; i < numbers.length; i++) {
         if (numbers[i] > 9) {
             let high = +String(numbers[i])[0];
@@ -170,17 +188,31 @@ function equalizePositions(number1, number2) {
 }
 
 console.log(stringSum("1590", "599"));
+console.log(stringSum("999999", "9999999"));
+console.log(stringSum("1", "-999"));
 console.log(stringSum("999", "1"));
 console.log(stringSum("999", "-1"));
+console.log("\n");
 
 console.log(stringDifference("1590", "599"));
+console.log(stringDifference("-1590", "599"));
+console.log(stringDifference("1590", "1599"));
+console.log(stringDifference("-1590", "-599"));
 console.log(stringDifference("123", "223"));
 console.log(stringDifference("999", "-1"));
+console.log("\n");
+
 
 console.log(stringCompose("15", "2"));
-console.log(stringCompose("-600", "20"));
+console.log(stringCompose("-600", "200"));
 console.log(stringCompose("-1000", "-9"));
+console.log(stringCompose("-600", "0"));
+console.log(stringCompose("0", "19"));
+console.log("\n");
+
 
 console.log(stringDivision("-15", "-200"));
 console.log(stringDivision("600", "20"));
 console.log(stringDivision("-1000", "9"));
+console.log(stringDivision("600", "0"));
+console.log(stringDivision("0", "9"));
