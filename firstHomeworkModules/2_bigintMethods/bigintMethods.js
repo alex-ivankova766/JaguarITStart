@@ -58,6 +58,7 @@ function stringDifference(number1, number2) {
         if ((number1.at(index) - number2.at(index)) < 0) {
             [number1, number2] = [number2, number1];
             negative = !negative;
+            break;
         }
     }
     
