@@ -1,0 +1,29 @@
+function printNumbersInterval(from, to) {
+    let current = from;
+
+    function go() {
+        console.log(current);
+        if (current == to) {
+            clearInterval(timer);
+        }
+        current++
+    }
+
+    go()
+    let timer = setInterval(go, 1000);
+}
+
+function printNumbersTimeout(from, to) {
+    let current = from;
+
+    setTimeout(function go() {
+        console.log(current);
+        if (current < to) {
+            setTimeout(go, 1000);
+        }
+        current++
+    }, 1000);
+}
+
+printNumbersInterval(5, 10);
+setTimeout(printNumbersTimeout, 6000, 11, 16);

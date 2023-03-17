@@ -1,2 +1,10 @@
 /GITIGNORE
 /learnJavaScript/node_modules
+/learnNodeJS/node_modules
+/learnNodeJS/package.json
+/learnNodeJS/package-lock.json
+/learnNodeJS/requirements.txt
+/secondHomeworkDB/package-lock.json
+/secondHomeworkDB/package.json
+/secondHomeworkDB/node_modules
+/secondHomeworkDB/.env
