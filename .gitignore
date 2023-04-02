@@ -8,3 +8,6 @@
 /secondHomeworkDB/package.json
 /secondHomeworkDB/node_modules
 /secondHomeworkDB/.env
+learnExpress/node_modules
+learnNestJS/node_modules
+node_modules
